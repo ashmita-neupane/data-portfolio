@@ -56,6 +56,10 @@ Prototype forms were created to simulate interactions such as:
 - Bike rentals and returns  
 - Late fee updates and balance checks  
 
+![UI Form](./UI_Form1.png)
+![UI Form Submission](./UI_Form2.png)
+![UI Form Trigger](./UI_Form3_Trigger.jpg)
+
 ---
 
 ### Results
