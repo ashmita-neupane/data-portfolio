@@ -1,0 +1,329 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww15040\viewh12740\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 -- IS 443/543\
+-- Ashmita Neupane, Komi Agodongo, Leroy Mukirisu\
+-- Spring 2025\
+\
+DROP TABLE CUSTOMER CASCADE CONSTRAINTS;\
+DROP TABLE LOCATION CASCADE CONSTRAINTS;\
+DROP TABLE STAFF CASCADE CONSTRAINTS;\
+DROP TABLE BIKECATEGORY CASCADE CONSTRAINTS;\
+DROP TABLE MANUFACTURER CASCADE CONSTRAINTS;\
+DROP TABLE BIKE CASCADE CONSTRAINTS;\
+DROP TABLE RENTAL_TRANSACTION CASCADE CONSTRAINTS;\
+DROP TABLE RENTALDETAILS CASCADE CONSTRAINTS;\
+DROP TABLE RETURN CASCADE CONSTRAINTS;\
+\
+-- Create CUSTOMER Table\
+CREATE TABLE CUSTOMER (\
+    MemberID VARCHAR2(50) PRIMARY KEY,\
+    FirstName VARCHAR2(50),\
+    LastName VARCHAR2(50),\
+    Phone VARCHAR2(15),\
+    City VARCHAR2(50),\
+    RegistrationDate DATE,\
+    AmountPaid FLOAT,\
+    UnpaidBalance FLOAT\
+);\
+\
+-- Insert records into CUSTOMER Table\
+\
+INSERT INTO CUSTOMER (MemberID, FirstName, LastName, Phone, City, RegistrationDate, AmountPaid, UnpaidBalance)\
+VALUES ('C001', 'Alice', 'Johnson', '612-123-4567', 'Minneapolis', DATE '2025-03-01', 120.00, 0);\
+\
+INSERT INTO CUSTOMER (MemberID, FirstName, LastName, Phone, City, RegistrationDate, AmountPaid, UnpaidBalance)\
+VALUES ('C002', 'Bob', 'Anderson', '414-234-5678', 'Milwaukee', DATE '2025-03-02', 95.00, 30);\
+\
+INSERT INTO CUSTOMER (MemberID, FirstName, LastName, Phone, City, RegistrationDate, AmountPaid, UnpaidBalance)\
+VALUES ('C003', 'Charlie', 'Brown', '605-345-6789', 'Sioux Falls', DATE '2025-03-03', 150.00, 10);\
+\
+INSERT INTO CUSTOMER (MemberID, FirstName, LastName, Phone, City, RegistrationDate, AmountPaid, UnpaidBalance)\
+VALUES ('C004', 'Dana', 'White', '218-456-7890', 'Duluth', DATE '2025-03-04', 0, 40);\
+\
+\
+-- Create LOCATION Table\
+CREATE TABLE LOCATION (\
+    LocationID VARCHAR2(50) PRIMARY KEY,\
+    City VARCHAR2(50),\
+    State CHAR(2),\
+    Phone VARCHAR2(15)\
+);\
+\
+-- Insert records into LOCATION Table\
+\
+INSERT INTO LOCATION (LocationID, City, State, Phone)\
+VALUES ('L001', 'Minneapolis', 'MN', '612-555-1234');\
+\
+INSERT INTO LOCATION (LocationID, City, State, Phone)\
+VALUES ('L002', 'Milwaukee', 'WI', '414-555-5678');\
+\
+INSERT INTO LOCATION (LocationID, City, State, Phone)\
+VALUES ('L003', 'Sioux Falls', 'SD', '605-555-9876');\
+\
+INSERT INTO LOCATION (LocationID, City, State, Phone)\
+VALUES('L004', 'Duluth', 'MN', '218-555-4321');\
+\
+\
+-- Create STAFF Table\
+CREATE TABLE STAFF (\
+    StaffID VARCHAR2(50) PRIMARY KEY,\
+    LocationID VARCHAR2(50) REFERENCES LOCATION(LocationID),\
+    Name VARCHAR2(50),\
+    Position VARCHAR2(50),\
+    Phone VARCHAR2(15)\
+);\
+\
+-- Insert records into STAFF Table\
+\
+INSERT INTO STAFF (StaffID, LocationID, Name, Position, Phone)\
+VALUES ('S001', 'L001', 'John Doe', 'Manager', '612-555-1111');\
+\
+INSERT INTO STAFF (StaffID, LocationID, Name, Position, Phone)\
+VALUES ('S002', 'L002', 'Jane Smith', 'Technician', '414-555-2222');\
+\
+INSERT INTO STAFF (StaffID, LocationID, Name, Position, Phone)\
+VALUES ('S003', 'L003', 'Sam Wilson', 'Technician', '605-555-3333');\
+ \
+INSERT INTO STAFF (StaffID, LocationID, Name, Position, Phone)\
+VALUES ('S004', 'L004', 'Emily Davis', 'Clerk', '218-555-4444');\
+\
+\
+-- Create BIKECATEGORY Table\
+CREATE TABLE BIKECATEGORY (\
+    CategoryID VARCHAR2(50) PRIMARY KEY,\
+    CategoryName VARCHAR2(50),\
+    BikeFee FLOAT\
+);\
+\
+-- Insert records into BIKECATEGORY Table\
+\
+INSERT INTO BIKECATEGORY (CategoryID, CategoryName, BikeFee)\
+VALUES ('BC101', 'Electric', 80.00);\
+\
+INSERT INTO BIKECATEGORY (CategoryID, CategoryName, BikeFee)\
+VALUES ('BC201', 'Mountain', 95.00);\
+\
+INSERT INTO BIKECATEGORY (CategoryID, CategoryName, BikeFee)\
+VALUES ('BC301', 'Touring', 95.00);\
+\
+INSERT INTO BIKECATEGORY (CategoryID, CategoryName, BikeFee)\
+VALUES ('BC401', 'Folding', 100.00);\
+\
+\
+-- Create MANUFACTURER Table\
+CREATE TABLE MANUFACTURER (\
+    ManufacturerID VARCHAR2(50) PRIMARY KEY,\
+    Name VARCHAR2(50),\
+    Phone VARCHAR2(15)\
+);\
+\
+-- Insert records into MANUFACTURER Table\
+\
+INSERT INTO MANUFACTURER (ManufacturerID, Name, Phone)\
+VALUES ('M001', 'Giant Bikes', '312-555-5678');\
+\
+INSERT INTO MANUFACTURER (ManufacturerID, Name, Phone)\
+VALUES ('M002', 'Trek Bikes', '608-555-1234');\
+\
+INSERT INTO MANUFACTURER (ManufacturerID, Name, Phone)\
+VALUES ('M003', 'Specialized', '408-555-9876');\
+\
+INSERT INTO MANUFACTURER (ManufacturerID, Name, Phone)\
+VALUES ('M004', 'Cannondale', '203-555-4321');\
+\
+\
+-- Create BIKE Table\
+CREATE TABLE BIKE (\
+    BikeID VARCHAR2(50) PRIMARY KEY,\
+    CategoryName VARCHAR2(50),\
+    CategoryID VARCHAR2(50) REFERENCES BIKECATEGORY(CategoryID),\
+    Status VARCHAR2(50),\
+    ManufacturerID VARCHAR2(50) REFERENCES MANUFACTURER(ManufacturerID),\
+    LocationID VARCHAR2(50) REFERENCES LOCATION(LocationID)\
+);\
+\
+-- Insert records into BIKE Table\
+\
+INSERT INTO BIKE (BikeID, CategoryName, CategoryID, Status, ManufacturerID, LocationID)\
+VALUES ('B001', 'Road', 'BC101', 'Available', 'M001', 'L001');\
+\
+INSERT INTO BIKE (BikeID, CategoryName, CategoryID, Status, ManufacturerID, LocationID)\
+VALUES ('B002', 'Mountain', 'BC201', 'Available', 'M002', 'L002');\
+\
+INSERT INTO BIKE (BikeID, CategoryName, CategoryID, Status, ManufacturerID, LocationID)\
+VALUES ('B003', 'Touring', 'BC301', 'Out', 'M003', 'L003');\
+\
+INSERT INTO BIKE (BikeID, CategoryName, CategoryID, Status, ManufacturerID, LocationID)\
+VALUES ('B004', 'Folding', 'BC401', 'Available', 'M004', 'L004');\
+\
+\
+-- Create RENTAL_TRANSACTION Table\
+CREATE TABLE RENTAL_TRANSACTION (\
+    RentalID VARCHAR2(50) PRIMARY KEY,\
+    MemberID VARCHAR2(50) REFERENCES CUSTOMER(MemberID),\
+    LocationID VARCHAR2(50) REFERENCES LOCATION(LocationID),\
+    RentDate DATE,\
+    Time VARCHAR2(50),\
+    TotalCost FLOAT,\
+    LateFee FLOAT\
+);\
+\
+-- Insert records into RENTAL_TRANSACTION Table\
+\
+INSERT INTO RENTAL_TRANSACTION (RentalID, MemberID, LocationID, RentDate, Time, TotalCost, LateFee)\
+VALUES ('R001', 'C001', 'L001', DATE '2025-03-01', '10:00:00', 80.00, 0);\
+\
+INSERT INTO RENTAL_TRANSACTION (RentalID, MemberID, LocationID, RentDate, Time, TotalCost, LateFee)\
+VALUES ('R002', 'C002', 'L002', DATE '2025-03-02', '11:00:00', 95.00, 10);\
+\
+INSERT INTO RENTAL_TRANSACTION (RentalID, MemberID, LocationID, RentDate, Time, TotalCost, LateFee)\
+VALUES ('R003', 'C003', 'L003', DATE '2025-03-03', '12:00:00', 95.00, 5);\
+\
+INSERT INTO RENTAL_TRANSACTION (RentalID, MemberID, LocationID, RentDate, Time, TotalCost, LateFee)\
+VALUES ('R004', 'C004', 'L004', DATE '2025-03-04', '01:00:00', 100.00, 0);\
+\
+\
+-- Create RENTALDETAILS Table\
+CREATE TABLE RENTALDETAILS (\
+    RentalDetailID VARCHAR2(50) PRIMARY KEY,\
+    RentalID VARCHAR2(50) REFERENCES RENTAL_TRANSACTION(RentalID),\
+    BikeID VARCHAR2(50) REFERENCES BIKE(BikeID),\
+    BikeFee FLOAT\
+);\
+\
+-- Insert records into RENTALDETAILS Table\
+\
+INSERT INTO RENTALDETAILS (RentalDetailID, RentalID, BikeID, BikeFee)\
+VALUES ('RD001', 'R001', 'B001', 80.00);\
+\
+INSERT INTO RENTALDETAILS (RentalDetailID, RentalID, BikeID, BikeFee)\
+VALUES ('RD002', 'R002', 'B002', 95.00);\
+\
+INSERT INTO RENTALDETAILS (RentalDetailID, RentalID, BikeID, BikeFee)\
+VALUES ('RD003', 'R003', 'B003', 95.00);\
+\
+INSERT INTO RENTALDETAILS (RentalDetailID, RentalID, BikeID, BikeFee)\
+VALUES ('RD004', 'R004', 'B004', 100.00);\
+\
+\
+-- Create RETURN Table\
+CREATE TABLE RETURN (\
+    BikeID VARCHAR2(50) PRIMARY KEY,\
+    RentalDetailID VARCHAR2(50) REFERENCES RENTALDETAILS(RentalDetailID),\
+    LocationID VARCHAR2(50) REFERENCES LOCATION(LocationID),\
+    ExpectedReturnDate DATE,\
+    ExpectedReturnTime VARCHAR2(50),\
+    ActualReturnDate DATE,\
+    ActualReturnHour VARCHAR2(50)\
+);\
+\
+-- Insert records into RETURN Table\
+\
+INSERT INTO RETURN (BikeID, RentalDetailID, LocationID, ExpectedReturnDate, ExpectedReturnTime, ActualReturnDate, ActualReturnHour)\
+VALUES ('B001', 'RD001', 'L001', DATE '2025-03-03', '10:00:00', DATE '2025-03-03', '09:45:00');\
+\
+INSERT INTO RETURN (BikeID, RentalDetailID, LocationID, ExpectedReturnDate, ExpectedReturnTime, ActualReturnDate, ActualReturnHour)\
+VALUES ('B002', 'RD002', 'L002', DATE '2025-03-05', '11:30:00', DATE '2025-03-05', '11:25:00');\
+\
+INSERT INTO RETURN (BikeID, RentalDetailID, LocationID, ExpectedReturnDate, ExpectedReturnTime, ActualReturnDate, ActualReturnHour)\
+VALUES ('B003', 'RD003', 'L003', DATE '2025-03-07', '12:45:00', DATE '2025-03-06', '1:25:00');\
+\
+INSERT INTO RETURN (BikeID, RentalDetailID, LocationID, ExpectedReturnDate, ExpectedReturnTime, ActualReturnDate, ActualReturnHour)\
+VALUES ('B004', 'RD004', 'L004', DATE '2025-03-08', '01:15:00', DATE '2025-03-08', '12:45:00');\
+\
+\
+-- Trigger 1\
+CREATE OR REPLACE TRIGGER LimitBikeRentals\
+BEFORE INSERT ON RENTALDETAILS\
+FOR EACH ROW\
+DECLARE\
+    BikeCount INT;\
+    v_memberID CUSTOMER.MemberID%TYPE;\
+BEGIN\
+    -- Step 1: Find RentalID of the Customer\
+    SELECT RT.RENTALID\
+    INTO v_memberID\
+    FROM RENTAL_TRANSACTION RT, Customer CUS\
+    WHERE RT.RentalID = :NEW.RentalID\
+    -- JOIN Rental_Transaction and Customer through MemberID\
+    AND RT.MEMBERID = CUS.MEMBERID;\
+\
+    -- Step 2: Count number of bikes rented by this customer that have not been returned\
+    SELECT COUNT(*)\
+    INTO BikeCount\
+    FROM \
+    RENTALDETAILS RD,\
+    RENTAL_TRANSACTION RT\
+    WHERE RT.RENTALID = RD.RENTALID \
+    AND   RT.RENTALID = v_memberID;\
+    -- Step 3: Check if renting another bike would exceed the limit\
+    IF BikeCount >= 3 THEN\
+       RAISE_APPLICATION_ERROR(-20002, 'Customer cannot rent more than 3 bikes at a time.');\
+    END IF;\
+   --  Step 4: Update Bike status to 'Out'\
+    UPDATE BIKE\
+    SET   Status = 'Out'\
+    WHERE BikeID = :NEW.BikeID;\
+END;\
+/\
+\
+-- Trigger #2\
+CREATE OR REPLACE TRIGGER HandleLateReturn\
+AFTER INSERT OR UPDATE ON RETURN\
+FOR EACH ROW\
+DECLARE\
+    days_late NUMBER;\
+    late_fee FLOAT;\
+    MemberId CUSTOMER.MemberID%TYPE;\
+BEGIN\
+    -- Calculate the number of days late\
+    IF :NEW.ActualReturnDate > :NEW.ExpectedReturnDate THEN\
+        days_late := :NEW.ActualReturnDate - :NEW.ExpectedReturnDate;\
+        late_fee := days_late * 20;\
+        \
+        -- Find the customer\
+        SELECT RT.MemberID\
+        INTO MemberId\
+        FROM RENTALDETAILS RD\
+        JOIN RENTAL_TRANSACTION RT ON RD.RentalID = RT.RentalID\
+        WHERE RD.RentalDetailID = :NEW.RentalDetailID;\
+        \
+        -- Update the customer's unpaid balance\
+        UPDATE CUSTOMER\
+        SET UnpaidBalance = NVL(UnpaidBalance, 0)+ late_fee\
+        WHERE MemberID = MemberId;\
+    END IF;\
+    \
+    -- Update the bike status to 'Available' and its return location\
+    UPDATE BIKE\
+    SET Status = 'Available', LocationID = :NEW.LocationID\
+    WHERE BikeID = :NEW.BikeID;\
+END;\
+/\
+\
+-- Trigger #3\
+CREATE OR REPLACE TRIGGER CheckUnpaidBalance\
+BEFORE INSERT OR UPDATE ON RENTAL_TRANSACTION\
+FOR EACH ROW\
+DECLARE\
+    unpaid_balance FLOAT;\
+BEGIN\
+    -- Check customer's unpaid balance\
+    SELECT NVL(UnpaidBalance, 0)\
+    INTO unpaid_balance\
+    FROM CUSTOMER\
+    WHERE MemberID = :NEW.MemberID;\
+    \
+    IF unpaid_balance > 500 THEN\
+        RAISE_APPLICATION_ERROR(-20001, 'Cannot rent the bike if unpaid balance exceeds $500.');\
+    END IF;\
+END;\
+/\
+\
+\
+}
